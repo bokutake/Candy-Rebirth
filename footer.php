@@ -2,3 +2,15 @@
 <?php $this->footer(); ?>
 </body>
 </html>
+<?php
+    $echo = ob_get_contents();
+    ob_clean();
+    $placeholder = $this->options->themeUrl."/img/Akkarin.jpg";
+    if(!empty($this->options->lazyLoad)) {
+      $placeholder = $this->options->lazyLoad;
+    }
+    $preg = "/<img (.*)src(.*)>/i";
+    $replaced = '<img \\1class="lazyload" src="'.$placeholder.'" data-src\\2 />';
+    print preg_replace('/class="(.*)"/i', 'class="lazyload \\1"' ,preg_replace($preg, $replaced, $echo));
+    ob_end_flush();
+?>
